@@ -37,4 +37,12 @@ $ rails test
 $ rails server
 ```
 
+Vagrantを使用している環境で、アクセスできない場合は
+こちらです。
+
+```
+$ rails server -b 0.0.0.0
+```
+http://192.168.33.10:3000/　にアクセスします。
+
 詳しくは、[*Ruby on Rails チュートリアル*](http://railstutorial.jp/)を参考にしてください。
