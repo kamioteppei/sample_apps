@@ -1,4 +1,13 @@
 class UsersController < ApplicationController
+
+#外部からコマンドでuserをPOSTできるか試す
+#curl -X POST 'http://192.168.33.10:3000/users' -H "Content-Type: application/json" -d '{"user":{"name":"postman","email":"postman@gmail.com","password":"postman","password_confirmation":"postman"}}'
+#ActionController::InvalidAuthenticityTokenが発生した。
+#Railsがセキュリティー対策で、リクエストが正しいかチェックしている。
+#(参照)https://ja.wikipedia.org/wiki/クロスサイトリクエストフォージェリ
+#以下の記述で、特定のアクションを受け付けることができる。
+#  protect_from_forgery :except => [:create]
+
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
                                         :following, :followers]
   before_action :correct_user,   only: [:edit, :update]
@@ -13,7 +22,7 @@ class UsersController < ApplicationController
     @microposts = @user.microposts.paginate(page: params[:page])
     #debugger
   end
-  
+
   def new
     @user = User.new
   end
@@ -28,7 +37,7 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
-  
+
   def edit
   end
 
@@ -62,18 +71,18 @@ class UsersController < ApplicationController
   end
 
   private
-  
+
     def user_params
       params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation)
     end
-    
+
     # 正しいユーザーかどうか確認
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
     end
-    
+
     # 管理者かどうか確認
     def admin_user
       redirect_to(root_url) unless current_user.admin?
