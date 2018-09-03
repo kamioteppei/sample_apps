@@ -1,8 +1,8 @@
 class Micropost < ApplicationRecord
-  #miropostを経路列挙モデルで、再帰的にネストできるようにする
-  #https://techracho.bpsinc.jp/hira/2018_03_15/53872
-  has_ancestry
-  
+  #miropostを再帰的にネストできるようにする
+  #https://ruby-rails.hatenadiary.com/entry/20150216/1424092796
+  acts_as_nested_set
+
   belongs_to :user
   default_scope -> { order(created_at: :desc) }
   mount_uploader :picture, PictureUploader

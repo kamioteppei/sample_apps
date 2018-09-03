@@ -5,13 +5,20 @@ class MicropostsController < ApplicationController
   def show
     #debugger
     @micropost = Micropost.find(params[:id])
-    #https://github.com/stefankroes/ancestry
-   @descendants = @micropost.descendants
-
-  #  @descendants = @micropost.descendants.sort_by_ancestry
-    #@microposts = @micropost
+    #miropostを再帰的にネストできるようにする
+    #https://ruby-rails.hatenadiary.com/entry/20150216/1424092796
+    @microposts_sorted = sort_as_tree(@micropost)
     #アクション名と同じテンプレートでレンダーされるはず
     #render "show"
+  end
+
+  def sort_as_tree(parent)
+    result = [parent]
+    parent.children.each do |child|
+      #result.push(child)
+      result.concat(sort_as_tree(child))
+    end
+    return result
   end
 
   def create
